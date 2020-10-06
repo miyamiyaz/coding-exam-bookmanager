@@ -1,11 +1,27 @@
 package com.example.domain
 
-import io.micronaut.data.annotation.Query
 import io.micronaut.data.annotation.Repository
 import io.micronaut.data.repository.CrudRepository
+import javax.persistence.EntityManager
+
 
 @Repository
-interface BookRepository : CrudRepository<Book, Long> {
-    @Query("SELECT b FROM book b JOIN b.authors a WHERE a.name = :name")
-    fun findByAuthor(name: String): List<Book>
+abstract class BookRepository(private val entityManager: EntityManager) : CrudRepository<Book, Long> {
+    fun searchByTitle(title: String): List<Book> {
+        return entityManager.createQuery(
+                "SELECT b FROM Book b WHERE b.title LIKE :title ESCAPE '\\'",
+                Book::class.java
+        )
+                .setParameter("title", "${title.escapeLikeReservations()}%")
+                .resultList
+    }
+
+    fun searchByAuthor(name: String): List<Book> {
+        return entityManager.createQuery(
+                "SELECT b FROM Book b JOIN b.authors a WHERE a.name LIKE :name ESCAPE '\\'",
+                Book::class.java
+        )
+                .setParameter("name", "${name.escapeLikeReservations()}%")
+                .resultList
+    }
 }

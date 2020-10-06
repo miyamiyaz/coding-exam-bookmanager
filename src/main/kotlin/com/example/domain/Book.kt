@@ -2,10 +2,12 @@ package com.example.domain
 
 import java.time.LocalDateTime
 import javax.persistence.*
+import javax.validation.constraints.NotEmpty
 import javax.validation.constraints.NotNull
 
 
-@Entity(name = "book")
+@Entity
+@Table(name = "book")
 data class Book(
         @get:NotNull
         @Column(name = "title")
@@ -15,6 +17,7 @@ data class Book(
         @Column(name = "publish_at")
         var publishAt: LocalDateTime = LocalDateTime.now(),
 
+        @get:NotEmpty
         @ManyToMany
         @JoinTable(
                 name = "book_author_link",
