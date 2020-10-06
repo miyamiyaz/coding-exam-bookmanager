@@ -25,7 +25,7 @@
                 th:text="${book.title}"></td>
             <td data-label="Author">
                 <th:block th:each="author :${book.authors}">
-                    <span th:text="${author.name}"></span>
+                    <a th:href="@{/book(a=${author.id})}" th:text="${author.name}"></a>
                     <span th:unless="${authorStat.last}">,</span>
                 </th:block>
             </td>
