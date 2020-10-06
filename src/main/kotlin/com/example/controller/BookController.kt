@@ -7,16 +7,19 @@ import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.QueryValue
 import io.micronaut.views.View
 import javax.inject.Inject
+import javax.transaction.Transactional
+
 
 @Controller("/book")
-class BookController {
+open class BookController {
 
     @Inject
     lateinit var bookRepository: BookRepository
 
+    @Transactional
     @Get("/")
     @View("book/index")
-    fun index(
+    open fun index(
             @QueryValue("q") query: String?,
             @QueryValue("a") authorId: Long?
     ): HttpResponse<Map<String, Any>> {
@@ -26,6 +29,6 @@ class BookController {
             else -> bookRepository.findAll().toList()
         }
 
-        return HttpResponse.ok(mapOf("books" to books))
+        return HttpResponse.ok(mapOf("books" to books, "query" to (query ?: "")))
     }
 }

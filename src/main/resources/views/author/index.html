@@ -7,7 +7,22 @@
 </head>
 <body>
 <section>
-    <h1>著者一覧</h1>
+    <div style="margin-top: 1em; display: flex; justify-content: space-between; align-items: center;">
+        <div style="font-size: 2em; font-weight: bolder;">著者一覧</div>
+        <div style="display: flex; align-items: center;">
+            <form class="ui search" method="GET" th:action="@{/author}">
+                <div class="ui icon input">
+                    <input class="prompt" name="q" placeholder="氏名..." th:value="${query}" type="text">
+                    <i class="search icon"></i>
+                </div>
+            </form>
+            <button class="ui primary button" style="margin-left: 5px;">
+                <i class="icon plus"></i>
+                追加
+            </button>
+        </div>
+    </div>
+
     <table class="ui celled table">
         <thead>
         <tr>
@@ -27,6 +42,7 @@
         </tr>
         </tbody>
     </table>
+    <a th:href="@{/book}">&lt; 書籍一覧に移動</a>
 </section>
 </body>
 </html>

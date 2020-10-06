@@ -17,12 +17,13 @@ open class AuthorController {
     @Inject
     lateinit var authorRepository: AuthorRepository
 
+    @Transactional
     @Get("/")
     @View("author/index")
-    fun index(@QueryValue("q") query: String?): HttpResponse<Map<String, Any>> {
-        val authors = query?.let { authorRepository.searchByName(it) } ?: authorRepository.findAll()
+    open fun index(@QueryValue("q") query: String?): HttpResponse<Map<String, Any>> {
+        val authors = query?.let { authorRepository.searchByName(it) } ?: authorRepository.findAll().toList()
 
-        return HttpResponse.ok(mapOf("authors" to authors))
+        return HttpResponse.ok(mapOf("authors" to authors, "query" to (query ?: "")))
     }
 
     @Transactional
