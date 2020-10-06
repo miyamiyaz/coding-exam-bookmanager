@@ -1,6 +1,9 @@
 package com.example.domain
 
-import javax.persistence.*
+import javax.persistence.Column
+import javax.persistence.Entity
+import javax.persistence.Index
+import javax.persistence.Table
 import javax.validation.constraints.NotBlank
 
 
@@ -15,7 +18,4 @@ data class Author(
         @get:NotBlank
         @Column(name = "name")
         var name: String = "",
-
-        @ManyToMany(mappedBy = "authors")
-        val books: Set<Book> = HashSet()
 ) : BaseEntity()

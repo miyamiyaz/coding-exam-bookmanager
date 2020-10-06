@@ -8,6 +8,6 @@ import io.reactivex.Single
 
 @Client("/author")
 interface AuthorClient {
-    @Get(consumes = [MediaType.TEXT_PLAIN])
+    @Get(consumes = [MediaType.TEXT_HTML])
     fun index(): Single<String>
 }
