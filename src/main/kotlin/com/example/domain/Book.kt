@@ -1,5 +1,6 @@
 package com.example.domain
 
+import java.time.LocalDateTime
 import javax.persistence.*
 import javax.validation.constraints.NotNull
 
@@ -9,6 +10,10 @@ data class Book(
         @get:NotNull
         @Column(name = "title")
         var title: String = "",
+
+        @get:NotNull
+        @Column(name = "publish_at")
+        var publishAt: LocalDateTime = LocalDateTime.now(),
 
         @ManyToMany
         @JoinTable(
