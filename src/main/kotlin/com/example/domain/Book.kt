@@ -18,7 +18,7 @@ data class Book(
         var publishAt: LocalDateTime = LocalDateTime.now(),
 
         @get:NotEmpty
-        @ManyToMany
+        @ManyToMany(fetch = FetchType.EAGER)
         @JoinTable(
                 name = "book_author_link",
                 joinColumns = [JoinColumn(name = "author_id")],

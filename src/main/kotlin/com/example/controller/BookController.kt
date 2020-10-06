@@ -16,8 +16,15 @@ class BookController {
 
     @Get("/")
     @View("book/index")
-    fun index(@QueryValue("q") query: String?): HttpResponse<Map<String, Any>> {
-        val books = query?.let { bookRepository.searchByTitle(it) } ?: bookRepository.findAll()
+    fun index(
+            @QueryValue("q") query: String?,
+            @QueryValue("a") authorId: Long?
+    ): HttpResponse<Map<String, Any>> {
+        val books = when {
+            authorId != null -> bookRepository.findByAuthorId(authorId)
+            query != null -> bookRepository.searchByTitle(query)
+            else -> bookRepository.findAll().toList()
+        }
 
         return HttpResponse.ok(mapOf("books" to books))
     }

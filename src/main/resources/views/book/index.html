@@ -8,8 +8,31 @@
 <body>
 <section>
     <h1>書籍一覧</h1>
-    <h1 th:if="${loggedIn}">username: <span th:text="${username}"></span></h1>
-    <h1 th:unless="${loggedIn}">You are not logged in</h1>
-</section>
+    <table class="ui celled table">
+        <thead>
+        <tr>
+            <th>No</th>
+            <th>タイトル</th>
+            <th>著者</th>
+            <th>作成日時</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="book : ${books}">
+            <td data-label="No"
+                th:text="${book.id}"></td>
+            <td data-label="Title"
+                th:text="${book.title}"></td>
+            <td data-label="Author">
+                <th:block th:each="author :${book.authors}">
+                    <span th:text="${author.name}"></span>
+                    <span th:unless="${authorStat.last}">,</span>
+                </th:block>
+            </td>
+            <td data-label="CreatedAt"
+                th:text="${book.createdAt}"></td>
+        </tr>
+        </tbody>
+    </table>
 </body>
 </html>
