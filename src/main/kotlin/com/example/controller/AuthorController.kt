@@ -1,12 +1,12 @@
 package com.example.controller
 
-import com.example.domain.Author
 import com.example.domain.AuthorRepository
-import com.example.domain.Book
-import com.example.domain.BookRepository
-import io.micronaut.http.MediaType
+import io.micronaut.http.HttpResponse
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
+import io.micronaut.http.annotation.Post
+import io.micronaut.http.annotation.QueryValue
+import io.micronaut.views.View
 import javax.inject.Inject
 import javax.transaction.Transactional
 
@@ -17,20 +17,17 @@ open class AuthorController {
     @Inject
     lateinit var authorRepository: AuthorRepository
 
-    @Inject
-    lateinit var bookRepository: BookRepository
+    @Get("/")
+    @View("author/index")
+    fun index(@QueryValue("q") query: String?): HttpResponse<Map<String, Any>> {
+        val authors = query?.let { authorRepository.searchByName(it) } ?: authorRepository.findAll()
+
+        return HttpResponse.ok(mapOf("authors" to authors))
+    }
 
     @Transactional
-    @Get(produces = [MediaType.TEXT_PLAIN])
-    open fun index(): String {
-        var author = authorRepository.save(Author(name = "AAAAA"))
-        println("${author.createdAt} ${author.updatedAt} ${author.version}:: $author")
-        author.name = "BBBBB"
-        author = authorRepository.save(author)
-        println("${author.createdAt} ${author.updatedAt} ${author.version}:: $author")
-        bookRepository.save(Book(title = "Land of mine", authors = setOf(author)))
+    @Post("/register")
+    open fun register() {
 
-        println(bookRepository.findByAuthor("BBBBB"))
-        return "Hello World"
     }
 }
