@@ -3,10 +3,11 @@
       th:replace="~{layoutFile :: layout(~{::title}, ~{::section})}"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Home</title>
+    <title>著者一覧</title>
 </head>
 <body>
 <section>
+    <h1>著者一覧</h1>
     <h1 th:if="${loggedIn}">username: <span th:text="${username}"></span></h1>
     <h1 th:unless="${loggedIn}">You are not logged in</h1>
 </section>
