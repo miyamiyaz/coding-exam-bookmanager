@@ -12,7 +12,7 @@ class AuthorControllerSpec {
     lateinit var client: AuthorClient
 
     @Test
-    fun testHelloWorldResponse() {
-        Assertions.assertEquals("Hello World", client.index().blockingGet())
+    fun testIndex_Get() {
+        Assertions.assertTrue(client.index().blockingGet().contains("著者一覧"))
     }
 }
