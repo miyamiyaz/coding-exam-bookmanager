@@ -86,8 +86,9 @@ class BookController {
     }
 
     @Transactional
-    @Delete("/{id}")
-    fun delete(@PathVariable id: Long): HttpResponse<String> {
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED, MediaType.APPLICATION_JSON)
+    @Post("/delete")
+    fun delete(id: Long): HttpResponse<String> {
         bookRepository.deleteById(id)
         return HttpResponse.redirect(URI("/book"))
     }

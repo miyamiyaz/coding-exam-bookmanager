@@ -1,7 +1,6 @@
 package com.example.controller
 
 import io.micronaut.http.HttpResponse
-import io.micronaut.http.annotation.Delete
 import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.Post
 import io.micronaut.http.annotation.QueryValue
@@ -20,6 +19,6 @@ interface AuthorClient {
     @Post("/edit")
     fun save(name: String, id: Long? = null): Single<HttpResponse<String>>
 
-    @Delete("/{id}")
+    @Post("/delete")
     fun delete(id: Long): Single<HttpResponse<String>>
 }
