@@ -9,6 +9,10 @@
 <section>
     <h1 style="margin-top: 1em;">著者情報編集</h1>
 
+    <div th:if="${not #lists.isEmpty(errors)}">
+        <div style="color: red;" th:each="error : ${errors}" th:text="${error}"></div>
+    </div>
+
     <form class="ui form" th:action="@{/author/edit}" method="POST" enctype="application/x-www-form-urlencoded">
         <input type="hidden" name="id" th:if="${id != null}" th:value="${id}">
         <div class="field">
@@ -20,7 +24,6 @@
             <button class="ui primary button" type="submit">保存</button>
         </div>
     </form>
-
 </section>
 </body>
 </html>

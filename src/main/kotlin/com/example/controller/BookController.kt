@@ -1,17 +1,19 @@
 package com.example.controller
 
+import com.example.domain.Author
 import com.example.domain.AuthorRepository
 import com.example.domain.Book
 import com.example.domain.BookRepository
+import io.micronaut.http.HttpRequest
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.MediaType
 import io.micronaut.http.annotation.*
 import io.micronaut.validation.Validated
 import io.micronaut.views.View
 import java.net.URI
-import java.time.LocalDateTime
 import javax.inject.Inject
 import javax.transaction.Transactional
+import javax.validation.ConstraintViolationException
 import javax.validation.Valid
 
 
@@ -66,23 +68,32 @@ class BookController {
         }
         val authors = authorRepository.findByIdIn(bookForm.authorIds)
         book.authors.addAll(authors)
-        println(bookForm)
-        println(book)
-        when {
-            book.authors.isEmpty() ->
-                return HttpResponse.badRequest("authorIds must not be empty.")
-            bookForm.publishAt == null ->
-                return HttpResponse.badRequest("publishAt must not be empty.")
-            bookForm.publishAt?.isBefore(LocalDateTime.now()) == true ->
-                return HttpResponse.badRequest("publishAt must be future datetime.")
-        }
-        println("AAA")
 
         bookRepository.save(book.apply {
             title = bookForm.title ?: ""
             publishAt = bookForm.publishAt!!
         })
         return HttpResponse.redirect(URI("/book"))
+    }
+
+    @View("book/edit")
+    @Error(exception = ConstraintViolationException::class)
+    fun onFailed(
+            request: HttpRequest<Map<String, Any>>,
+            ex: ConstraintViolationException
+    ): HttpResponse<Map<String, Any?>> {
+        val form = request.getBody(BookForm::class.java)
+        val book = if (form.isPresent && form.get().id != null) {
+            bookRepository.findById(form.get().id!!).orElse(null) ?: return HttpResponse.notFound()
+        } else {
+            Author()
+        }
+
+        return HttpResponse.ok(mapOf(
+                "book" to book,
+                "id" to form.get().id,
+                "errors" to ex.constraintViolations.map { it.message },
+        ))
     }
 
     @Transactional

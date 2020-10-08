@@ -3,10 +3,7 @@ package com.example.controller
 import io.micronaut.core.annotation.Introspected
 import io.micronaut.core.convert.format.Format
 import java.time.LocalDateTime
-import javax.validation.constraints.NotBlank
-import javax.validation.constraints.NotEmpty
-import javax.validation.constraints.NotNull
-import javax.validation.constraints.Size
+import javax.validation.constraints.*
 
 
 @Introspected
@@ -19,6 +16,7 @@ open class BookForm {
 
     @Format("yyyy-MM-dd'T'HH:mm")
     @NotNull
+    @Future
     var publishAt: LocalDateTime? = null
 
     @NotEmpty

@@ -30,6 +30,7 @@
             <th>タイトル</th>
             <th>著者</th>
             <th>出版日時</th>
+            <th style="width: 5em;"></th>
         </tr>
         </thead>
         <tbody>
@@ -46,6 +47,18 @@
             </td>
             <td data-label="PublishAt"
                 th:text="${#temporals.format(book.publishAt, 'yyyy/MM/dd HH:mm')}"></td>
+            <td class="right aligned" data-label="Action"
+                style="display: flex; justify-content: space-between; align-items: center;">
+                <form method="POST" th:action="@{/book/delete}">
+                    <input name="id" th:value="${book.id}" type="hidden">
+                    <button class="ui red icon mini button" type="submit">
+                        <i class="trash alternate icon"></i>
+                    </button>
+                </form>
+                <a class="ui primary icon mini button" th:href="@{/author/edit(id=${book.id})}">
+                    <i class="edit icon"></i>
+                </a>
+            </td>
         </tr>
         </tbody>
     </table>

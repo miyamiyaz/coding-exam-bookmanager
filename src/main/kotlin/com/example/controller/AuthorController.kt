@@ -2,6 +2,7 @@ package com.example.controller
 
 import com.example.domain.Author
 import com.example.domain.AuthorRepository
+import io.micronaut.http.HttpRequest
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.MediaType
 import io.micronaut.http.annotation.*
@@ -10,6 +11,7 @@ import io.micronaut.views.View
 import java.net.URI
 import javax.inject.Inject
 import javax.transaction.Transactional
+import javax.validation.ConstraintViolationException
 import javax.validation.Valid
 
 
@@ -57,6 +59,26 @@ class AuthorController {
             name = authorForm.name ?: ""
         })
         return HttpResponse.redirect(URI("/author"))
+    }
+
+    @View("author/edit")
+    @Error(exception = ConstraintViolationException::class)
+    fun onFailed(
+            request: HttpRequest<Map<String, Any>>,
+            ex: ConstraintViolationException
+    ): HttpResponse<Map<String, Any?>> {
+        val form = request.getBody(AuthorForm::class.java)
+        val author = if (form.isPresent && form.get().id != null) {
+            authorRepository.findById(form.get().id!!).orElse(null) ?: return HttpResponse.notFound()
+        } else {
+            Author()
+        }
+
+        return HttpResponse.ok(mapOf(
+                "author" to author,
+                "id" to form.get().id,
+                "errors" to ex.constraintViolations.map { it.message },
+        ))
     }
 
     @Transactional

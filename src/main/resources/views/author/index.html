@@ -29,6 +29,8 @@
             <th>No</th>
             <th>氏名</th>
             <th>作成日時</th>
+            >
+            <th style="width: 5em;"></th>
         </tr>
         </thead>
         <tbody>
@@ -39,6 +41,18 @@
                 th:text="${author.name}"></td>
             <td data-label="CreatedAt"
                 th:text="${#temporals.format(author.createdAt, 'yyyy/MM/dd HH:mm')}"></td>
+            <td class="right aligned" data-label="Action">
+                <form method="POST" style="display: flex; justify-content: space-between; align-items: center;"
+                      th:action="@{/author/delete}">
+                    <input name="id" th:value="${author.id}" type="hidden">
+                    <button class="ui red icon mini button" type="submit">
+                        <i class="trash alternate icon"></i>
+                    </button>
+                </form>
+                <a class="ui primary icon mini button" th:href="@{/author/edit(id=${author.id})}">
+                    <i class="edit icon"></i>
+                </a>
+            </td>
         </tr>
         </tbody>
     </table>

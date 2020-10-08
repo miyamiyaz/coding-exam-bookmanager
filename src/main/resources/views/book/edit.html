@@ -9,6 +9,10 @@
 <section>
     <h1 style="margin-top: 1em;">書籍情報編集</h1>
 
+    <div th:if="${not #lists.isEmpty(errors)}">
+        <div style="color: red;" th:each="error : ${errors}" th:text="${error}"></div>
+    </div>
+
     <form class="ui form" enctype="application/x-www-form-urlencoded" method="POST" th:action="@{/book/edit}">
         <input name="id" th:if="${id != null}" th:value="${id}" type="hidden">
         <div class="field">
