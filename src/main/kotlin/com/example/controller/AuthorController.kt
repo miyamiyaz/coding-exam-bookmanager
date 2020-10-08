@@ -81,11 +81,31 @@ class AuthorController {
         ))
     }
 
+    class ExistsBooksOfAuthorException : RuntimeException()
+
     @Transactional
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED, MediaType.APPLICATION_JSON)
     @Post("/delete")
     fun delete(id: Long): HttpResponse<String> {
+        if (authorRepository.findById(id).isPresent) {
+            throw ExistsBooksOfAuthorException()
+        }
         authorRepository.deleteById(id)
         return HttpResponse.redirect(URI("/author"))
+    }
+
+    @View("author/index")
+    @Error(exception = ExistsBooksOfAuthorException::class)
+    fun onExistsAuthorOfTheBook(
+            request: HttpRequest<Map<String, Any>>,
+            ex: ExistsBooksOfAuthorException
+    ): HttpResponse<Map<String, Any>> {
+        val authors = authorRepository.findAll().toList()
+
+        return HttpResponse.ok(mapOf(
+                "authors" to authors,
+                "query" to "",
+                "errors" to listOf("著者に紐づく書籍が登録されているため、削除できません")
+        ))
     }
 }

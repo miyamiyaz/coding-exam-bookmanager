@@ -23,13 +23,16 @@
         </div>
     </div>
 
+    <div th:if="${not #lists.isEmpty(errors)}">
+        <div style="color: red;" th:each="error : ${errors}" th:text="${error}"></div>
+    </div>
+
     <table class="ui celled table">
         <thead>
         <tr>
             <th>No</th>
             <th>氏名</th>
             <th>作成日時</th>
-            >
             <th style="width: 5em;"></th>
         </tr>
         </thead>
@@ -41,9 +44,9 @@
                 th:text="${author.name}"></td>
             <td data-label="CreatedAt"
                 th:text="${#temporals.format(author.createdAt, 'yyyy/MM/dd HH:mm')}"></td>
-            <td class="right aligned" data-label="Action">
-                <form method="POST" style="display: flex; justify-content: space-between; align-items: center;"
-                      th:action="@{/author/delete}">
+            <td class="right aligned" data-label="Action"
+                style="display: flex; justify-content: space-between; align-items: center;">
+                <form method="POST" th:action="@{/author/delete}">
                     <input name="id" th:value="${author.id}" type="hidden">
                     <button class="ui red icon mini button" type="submit">
                         <i class="trash alternate icon"></i>
