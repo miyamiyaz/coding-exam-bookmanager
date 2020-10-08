@@ -3,20 +3,25 @@
       th:replace="~{layoutFile :: layout(~{::title}, ~{::section})}"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>著者編集</title>
+    <title>書籍情報編集</title>
 </head>
 <body>
 <section>
-    <h1>著者編集</h1>
+    <h1 style="margin-top: 1em;">書籍情報編集</h1>
 
-    <form class="ui form" th:action="@{/author/edit}" method="POST" enctype="application/x-www-form-urlencoded">
-        <input type="hidden" name="id" th:value="${author.id}">
+    <form class="ui form" enctype="application/x-www-form-urlencoded" method="POST" th:action="@{/book/edit}">
+        <input name="id" th:if="${id != null}" th:value="${id}" type="hidden">
         <div class="field">
-            <label>氏名</label>
-            <input th:value="${author.name}" type="text" name="name" placeholder="氏名">
+            <label>タイトル</label>
+            <input name="title" placeholder="タイトル" th:value="${book.title}" type="text">
         </div>
         <div class="field">
-            <a class="ui button" th:href="@{/author}">戻る</a>
+            <label>出版日時</label>
+            <input name="publishAt" placeholder="出版日"
+                   th:value="${#temporals.format(book.publishAt, 'yyyy-MM-dd\'T\'HH:mm')}" type="datetime-local">
+        </div>
+        <div class="field">
+            <a class="ui button" th:href="@{/book}">戻る</a>
             <button class="ui primary button" type="submit">保存</button>
         </div>
     </form>

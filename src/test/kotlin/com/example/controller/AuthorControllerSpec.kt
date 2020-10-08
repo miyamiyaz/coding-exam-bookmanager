@@ -1,11 +1,16 @@
 package com.example.controller
 
+import com.example.domain.Author
 import com.example.domain.AuthorRepository
 import io.micronaut.http.HttpStatus
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import javax.inject.Inject
+import javax.transaction.Transactional
+
 
 @MicronautTest
 open class AuthorControllerSpec {
@@ -27,12 +32,11 @@ open class AuthorControllerSpec {
     fun testEdit_GetNew() {
         val response = authorClient.edit().blockingGet()
         Assertions.assertEquals(HttpStatus.OK, response.status)
-        Assertions.assertTrue(response.body()!!.contains("著者編集"))
+        Assertions.assertTrue(response.body()!!.contains("著者情報編集"))
     }
 
     @Test
     fun testEdit_GetEdit() {
-        authorClient.save("西尾維新").blockingGet()
         val author = authorRepository.searchByName("西尾維新").let {
             Assertions.assertEquals(1, it.size)
             it[0]
@@ -44,7 +48,7 @@ open class AuthorControllerSpec {
     }
 
     @Test
-    open fun testSave_New() {
+    fun testSave_New() {
         authorClient.save("芥川龍之介").blockingGet()
         val searchResults = authorRepository.searchByName("芥川龍之介")
 
@@ -54,7 +58,6 @@ open class AuthorControllerSpec {
 
     @Test
     open fun testDelete_One() {
-        authorClient.save("村上春樹").blockingGet()
         val author = authorRepository.searchByName("村上春樹").let {
             Assertions.assertEquals(1, it.size)
             it[0]
@@ -63,6 +66,20 @@ open class AuthorControllerSpec {
         Assertions.assertEquals(HttpStatus.OK, authorClient.delete(author.id).blockingGet().status)
         val searchResults = authorRepository.searchByName("村上春樹")
         Assertions.assertEquals(0, searchResults.size)
+    }
 
+    @Transactional
+    @BeforeEach
+    open fun init() {
+        authorRepository.saveAll(listOf(
+                Author(name = "西尾維新"),
+                Author(name = "村上春樹"),
+        ))
+    }
+
+    @Transactional
+    @AfterEach
+    open fun finalize() {
+        authorRepository.deleteAll()
     }
 }

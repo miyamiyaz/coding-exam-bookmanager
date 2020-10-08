@@ -14,4 +14,17 @@ abstract class AuthorRepository(private val entityManager: EntityManager) : Crud
                 .setParameter("name", "${name.escapeLikeReservations()}%")
                 .resultList
     }
+
+    fun findByIdIn(ids: List<Long>): List<Author> {
+        // JPQLのINクエリに空のリストを渡すとエラーになるため先にチェックする
+        if (ids.isEmpty()) {
+            return listOf()
+        }
+        return entityManager.createQuery(
+                "SELECT a FROM Author a WHERE a.id IN :ids",
+                Author::class.java
+        )
+                .setParameter("ids", ids)
+                .resultList
+    }
 }

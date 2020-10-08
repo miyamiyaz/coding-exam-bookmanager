@@ -16,10 +16,10 @@
                     <i class="search icon"></i>
                 </div>
             </form>
-            <button class="ui primary button" style="margin-left: 5px;">
+            <a class="ui primary button" style="margin-left: 5px;" th:href="@{/book/edit}">
                 <i class="icon plus"></i>
                 追加
-            </button>
+            </a>
         </div>
     </div>
 
@@ -29,7 +29,7 @@
             <th>No</th>
             <th>タイトル</th>
             <th>著者</th>
-            <th>作成日時</th>
+            <th>出版日時</th>
         </tr>
         </thead>
         <tbody>
@@ -44,8 +44,8 @@
                     <span th:unless="${authorStat.last}">,</span>
                 </th:block>
             </td>
-            <td data-label="CreatedAt"
-                th:text="${book.createdAt}"></td>
+            <td data-label="PublishAt"
+                th:text="${#temporals.format(book.publishAt, 'yyyy/MM/dd HH:mm')}"></td>
         </tr>
         </tbody>
     </table>

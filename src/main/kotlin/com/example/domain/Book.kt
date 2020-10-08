@@ -24,5 +24,5 @@ data class Book(
                 joinColumns = [JoinColumn(name = "author_id")],
                 inverseJoinColumns = [JoinColumn(name = "book_id")]
         )
-        val authors: Set<Author> = HashSet(),
+        val authors: MutableSet<Author> = HashSet(),
 ) : BaseEntity()

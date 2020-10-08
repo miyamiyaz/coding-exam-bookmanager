@@ -3,11 +3,11 @@
       th:replace="~{layoutFile :: layout(~{::title}, ~{::section})}"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>著者編集</title>
+    <title>著者情報編集</title>
 </head>
 <body>
 <section>
-    <h1 style="margin-top: 1em;">著者編集</h1>
+    <h1 style="margin-top: 1em;">著者情報編集</h1>
 
     <form class="ui form" th:action="@{/author/edit}" method="POST" enctype="application/x-www-form-urlencoded">
         <input type="hidden" name="id" th:if="${id != null}" th:value="${id}">

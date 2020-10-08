@@ -12,7 +12,7 @@ import io.reactivex.Single
 @Client("/author")
 interface AuthorClient {
     @Get("/")
-    fun index(): Single<HttpResponse<String>>
+    fun index(@QueryValue q: String? = null): Single<HttpResponse<String>>
 
     @Get("/edit")
     fun edit(@QueryValue id: Long? = null): Single<HttpResponse<String>>
