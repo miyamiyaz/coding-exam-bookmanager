@@ -25,11 +25,25 @@
                    th:value="${#temporals.format(book.publishAt, 'yyyy-MM-dd\'T\'HH:mm')}" type="datetime-local">
         </div>
         <div class="field">
+            <label>著者</label>
+            <select class="ui fluid search dropdown" multiple="" name="authorIds"></select>
+        </div>
+        <div class="field">
             <a class="ui button" th:href="@{/book}">戻る</a>
             <button class="ui primary button" type="submit">保存</button>
         </div>
     </form>
 
+    <script type="text/javascript">
+        $(function(){
+            $('.ui.search.dropdown').dropdown({
+                apiSettings: {
+                  url: '/author/list/{query}'
+                },
+            });
+        });
+
+    </script>
 </section>
 </body>
 </html>

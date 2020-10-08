@@ -15,6 +15,16 @@ abstract class AuthorRepository(private val entityManager: EntityManager) : Crud
                 .resultList
     }
 
+    fun searchByName(name: String, limit: Int): List<Author> {
+        return entityManager.createQuery(
+                "SELECT a FROM Author a WHERE a.name LIKE :name ESCAPE '\\'",
+                Author::class.java
+        )
+                .setParameter("name", "${name.escapeLikeReservations()}%")
+                .setMaxResults(limit)
+                .resultList
+    }
+
     fun findByIdIn(ids: List<Long>): List<Author> {
         // JPQLのINクエリに空のリストを渡すとエラーになるため先にチェックする
         if (ids.isEmpty()) {

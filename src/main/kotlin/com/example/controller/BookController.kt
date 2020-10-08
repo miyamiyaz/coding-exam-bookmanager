@@ -1,6 +1,5 @@
 package com.example.controller
 
-import com.example.domain.Author
 import com.example.domain.AuthorRepository
 import com.example.domain.Book
 import com.example.domain.BookRepository
@@ -78,6 +77,7 @@ class BookController {
 
     @View("book/edit")
     @Error(exception = ConstraintViolationException::class)
+    @Transactional
     fun onFailed(
             request: HttpRequest<Map<String, Any>>,
             ex: ConstraintViolationException
@@ -86,7 +86,14 @@ class BookController {
         val book = if (form.isPresent && form.get().id != null) {
             bookRepository.findById(form.get().id!!).orElse(null) ?: return HttpResponse.notFound()
         } else {
-            Author()
+            Book()
+        }
+        if (form.isPresent) {
+            book.apply {
+                title = form.get().title ?: title
+                publishAt = form.get().publishAt ?: publishAt
+                authors.addAll(authorRepository.findByIdIn(form.get().authorIds))
+            }
         }
 
         return HttpResponse.ok(mapOf(

@@ -19,6 +19,8 @@ import javax.validation.Valid
 @Controller("/author")
 class AuthorController {
 
+    val kListLimit: Int = 20
+
     @Inject
     lateinit var authorRepository: AuthorRepository
 
@@ -29,6 +31,29 @@ class AuthorController {
         val authors = query?.let { authorRepository.searchByName(it) } ?: authorRepository.findAll().toList()
 
         return HttpResponse.ok(mapOf("authors" to authors, "query" to (query ?: "")))
+    }
+
+    @Transactional
+    @Get("/list")
+    fun listAll(): HttpResponse<Map<String, Any>> {
+        return listHandler()
+    }
+
+    @Transactional
+    @Get("/list/{query}")
+    fun list(@PathVariable query: String): HttpResponse<Map<String, Any>> {
+        return listHandler(query)
+    }
+
+    fun listHandler(query: String = ""): HttpResponse<Map<String, Any>> {
+        val authors = authorRepository.searchByName(query, kListLimit)
+
+        return HttpResponse.ok(mapOf("success" to true, "results" to authors.map {
+            mapOf<String, Any>(
+                    "name" to it.name,
+                    "value" to it.id,
+            )
+        }))
     }
 
     @Transactional
