@@ -26,7 +26,10 @@
         </div>
         <div class="field">
             <label>著者</label>
-            <select class="ui fluid search dropdown" multiple="" name="authorIds"></select>
+            <select class="ui fluid search dropdown" multiple="" name="authorIds">
+                <option th:each="author : ${book.authors}"
+                        th:selected="${true}" th:text="${author.name}" th:value="${author.id}"></option>
+            </select>
         </div>
         <div class="field">
             <a class="ui button" th:href="@{/book}">戻る</a>
@@ -40,6 +43,7 @@
                 apiSettings: {
                   url: '/author/list/{query}'
                 },
+                filterRemoteData: true,
             });
         });
 
