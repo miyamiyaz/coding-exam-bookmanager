@@ -12,6 +12,7 @@ import javax.inject.Inject
 import javax.transaction.Transactional
 import javax.validation.Valid
 
+
 @Validated
 @Controller("/author")
 class AuthorController {
@@ -35,7 +36,7 @@ class AuthorController {
         val author = if (id != null) {
             authorRepository.findById(id).orElse(null) ?: return HttpResponse.notFound()
         } else {
-            Author(name = "")
+            Author()
         }
 
         return HttpResponse.ok(mapOf("author" to author, "id" to id))
@@ -49,7 +50,7 @@ class AuthorController {
         val author = if (id != null) {
             authorRepository.findById(id).orElse(null) ?: return HttpResponse.notFound("author not found")
         } else {
-            Author(name = "")
+            Author()
         }
 
         authorRepository.save(author.apply {
