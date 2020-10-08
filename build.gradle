@@ -38,6 +38,8 @@ dependencies {
     implementation("io.micronaut.data:micronaut-data-hibernate-jpa")
     implementation("io.micronaut.data:micronaut-data-jdbc")
     implementation("io.micronaut.views:micronaut-views-thymeleaf")
+    implementation("io.micronaut.beanvalidation:micronaut-hibernate-validator")
+    implementation("org.thymeleaf.extras:thymeleaf-extras-java8time:3.0.4.RELEASE")
     runtimeOnly("com.h2database:h2")
     runtimeOnly("ch.qos.logback:logback-classic")
     runtimeOnly("com.fasterxml.jackson.module:jackson-module-kotlin")
