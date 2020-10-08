@@ -29,7 +29,7 @@ open class Configuration : ApplicationEventListener<ServerStartupEvent> {
         // Add #temporals dialect to thymeleaf template engine
         templateEngine.addDialect(Java8TimeDialect())
         // Add fixtures to db
-        registerInitialData()
+        //registerInitialData()
     }
 
     @Transactional

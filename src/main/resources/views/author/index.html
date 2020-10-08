@@ -16,10 +16,10 @@
                     <i class="search icon"></i>
                 </div>
             </form>
-            <button class="ui primary button" style="margin-left: 5px;">
+            <a th:href="@{/author/edit}" class="ui primary button" style="margin-left: 5px;">
                 <i class="icon plus"></i>
                 追加
-            </button>
+            </a>
         </div>
     </div>
 
@@ -38,7 +38,7 @@
             <td data-label="Name"
                 th:text="${author.name}"></td>
             <td data-label="CreatedAt"
-                th:text="${author.createdAt}"></td>
+                th:text="${#temporals.format(author.createdAt, 'yyyy/MM/dd HH:mm')}"></td>
         </tr>
         </tbody>
     </table>

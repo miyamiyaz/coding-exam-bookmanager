@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ja"
+      th:replace="~{layoutFile :: layout(~{::title}, ~{::section})}"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>著者編集</title>
+</head>
+<body>
+<section>
+    <h1 style="margin-top: 1em;">著者編集</h1>
+
+    <form class="ui form" th:action="@{/author/edit}" method="POST" enctype="application/x-www-form-urlencoded">
+        <input type="hidden" name="id" th:if="${id != null}" th:value="${id}">
+        <div class="field">
+            <label>氏名</label>
+            <input th:value="${author.name}" type="text" name="name" placeholder="氏名">
+        </div>
+        <div class="field">
+            <a class="ui button" th:href="@{/author}">戻る</a>
+            <button class="ui primary button" type="submit">保存</button>
+        </div>
+    </form>
+
+</section>
+</body>
+</html>
