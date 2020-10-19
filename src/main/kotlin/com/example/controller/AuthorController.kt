@@ -2,6 +2,7 @@ package com.example.controller
 
 import com.example.domain.Author
 import com.example.domain.AuthorRepository
+import com.example.domain.BookRepository
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.MediaType
@@ -20,6 +21,9 @@ import javax.validation.Valid
 class AuthorController {
 
     val kListLimit: Int = 20
+
+    @Inject
+    lateinit var bookRepository: BookRepository
 
     @Inject
     lateinit var authorRepository: AuthorRepository
@@ -112,7 +116,7 @@ class AuthorController {
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED, MediaType.APPLICATION_JSON)
     @Post("/delete")
     fun delete(id: Long): HttpResponse<String> {
-        if (authorRepository.findById(id).isPresent) {
+        if (bookRepository.countByAuthorId(id) > 0) {
             throw ExistsBooksOfAuthorException()
         }
         authorRepository.deleteById(id)

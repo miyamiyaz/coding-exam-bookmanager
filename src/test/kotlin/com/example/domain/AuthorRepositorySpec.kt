@@ -12,6 +12,9 @@ import javax.transaction.Transactional
 open class AuthorRepositorySpec {
 
     @Inject
+    lateinit var bookRepository: BookRepository
+
+    @Inject
     lateinit var authorRepository: AuthorRepository
 
     @Test
@@ -67,6 +70,7 @@ open class AuthorRepositorySpec {
     @Transactional
     @AfterEach
     open fun finalize() {
+        bookRepository.deleteAll()
         authorRepository.deleteAll()
     }
 }

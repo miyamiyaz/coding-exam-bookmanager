@@ -51,6 +51,11 @@ java {
     sourceCompatibility = JavaVersion.toVersion('11')
 }
 
+// use JUnit 5 platform
+test {
+    useJUnitPlatform()
+}
+
 compileKotlin {
     kotlinOptions {
         jvmTarget = '11'

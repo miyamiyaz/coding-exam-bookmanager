@@ -28,6 +28,14 @@ open class BookRepositorySpec {
     }
 
     @Test
+    fun testCountByAuthorId() {
+        val authors = authorRepository.searchByName("正岡子規")
+        Assertions.assertEquals(1, authors.size)
+
+        Assertions.assertEquals(1, bookRepository.countByAuthorId(authors[0].id))
+    }
+
+    @Test
     fun testSearchByTitle_NotExist() {
         val books = bookRepository.searchByTitle("グラスホッパー")
 

@@ -11,6 +11,9 @@ abstract class BookRepository(private val entityManager: EntityManager) : CrudRe
     @Query("SELECT b FROM Book b JOIN b.authors a WHERE a.id = :id")
     abstract fun findByAuthorId(id: Long): List<Book>
 
+    @Query("SELECT COUNT(b.id) FROM Book b JOIN b.authors a WHERE a.id = :id")
+    abstract fun countByAuthorId(id: Long): Long
+
     fun searchByTitle(title: String): List<Book> {
         return entityManager.createQuery(
                 "SELECT b FROM Book b WHERE b.title LIKE :title ESCAPE '\\'",
